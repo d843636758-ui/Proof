@@ -267,6 +267,10 @@ export const ingredients = {
   柠檬汁: { abv: 0, colorTag: '金黄', treePath: ['果', '柑橘'], flavor: { 烈: 0, 甜: 1, 酸: 5, 苦: 0, 香: 2, 涩: 0 }, actives: [{ compound: '果酸', amount: 0.8, referenceVolumeMl: 30 }] },
   糖浆: { abv: 0, colorTag: '透明', treePath: ['甜香', '糖'], flavor: { 烈: 0, 甜: 5, 酸: 0, 苦: 0, 香: 1, 涩: 0 }, actives: [{ compound: '糖分', amount: 1.0, referenceVolumeMl: 10 }] },
   浓缩咖啡: { abv: 0, colorTag: '深棕', treePath: ['甜香', '烘焙'], flavor: { 烈: 0, 甜: 1, 酸: 2, 苦: 4, 香: 5, 涩: 1 }, activeIngredient: '咖啡因', activeAmount: 1.0, referenceVolumeMl: 30 },
+  椰奶: { abv: 0, colorTag: '白浊', treePath: ['甜香', '椰子'], flavor: { 烈: 0, 甜: 2, 酸: 0, 苦: 0, 香: 4, 涩: 0 } },
+  绿薄荷利口酒: { abv: 0.25, colorTag: '绿', treePath: ['草本', '薄荷'], flavor: { 烈: 2, 甜: 4, 酸: 0, 苦: 0.5, 香: 5, 涩: 0 }, actives: [{ compound: '糖分', amount: 0.8, referenceVolumeMl: 30 }] },
+  蓝橙利口酒: { abv: 0.20, colorTag: '蓝', treePath: ['果', '柑橘'], flavor: { 烈: 2, 甜: 4, 酸: 0.5, 苦: 1, 香: 4, 涩: 0 }, actives: [{ compound: '糖分', amount: 0.8, referenceVolumeMl: 30 }, { compound: '苦味', amount: 0.1, referenceVolumeMl: 30 }] },
+  蝶豆花: { abv: 0, colorTag: '蓝', treePath: ['草本', '花'], flavor: { 烈: 0, 甜: 0, 酸: 0, 苦: 0.5, 香: 1, 涩: 0.5 }, diluent: true },
   水: { abv: 0, colorTag: '透明', treePath: ['无'], flavor: { 烈: 0, 甜: 0, 酸: 0, 苦: 0, 香: 0, 涩: 0 }, diluent: true },
   冰: { abv: 0, colorTag: '透明', treePath: ['无'], flavor: { 烈: 0, 甜: 0, 酸: 0, 苦: 0, 香: 0, 涩: 0 }, diluent: true, textures: ['冰'] }
 };

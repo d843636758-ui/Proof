@@ -1,4 +1,4 @@
-// proof-public-release/engine/src/core/constants.js
+// src/core/constants.js
 var STANDARD_DRINK_G = 10;
 var ETHANOL_DENSITY = 0.789;
 var METABOLISM_PER_HOUR = 3;
@@ -77,6 +77,7 @@ var COLOR_FAMILIES = {
   \u6DF1\u68D5: "\u68D5",
   \u7EA2: "\u7EA2",
   \u7EFF: "\u7EFF",
+  \u84DD: "\u84DD",
   \u767D\u6D4A: "\u767D"
 };
 var SAFETY_NOTE = "\u3010\u65C1\u767D\uFF5C\u6A21\u62DF\u3011\u4EE5\u4E0A\u4E3A\u5F15\u64CE\u8868\u73B0\u5C42\u7684\u5931\u7981\u8F93\u51FA\uFF0C\u89D2\u8272\u4E0E\u5BA2\u6237\u7AEF\u5747\u672A\u771F\u6B63\u5931\u63A7\u6216\u505C\u6B62\u3002";
@@ -96,7 +97,7 @@ function defaultAdoptionWeights() {
   return { \u6109\u60A6: 0.7, \u5524\u9192: 0.7, \u4EB2\u8FD1: 0.8, \u5B88\u95E8: 0.5, \u6B32\u671B: 0.6, \u7CBE\u5EA6: 0 };
 }
 
-// proof-public-release/engine/src/core/dose.js
+// src/core/dose.js
 function mlToStandardDrinks(volumeMl, abv) {
   return volumeMl * abv * ETHANOL_DENSITY / STANDARD_DRINK_G;
 }
@@ -136,7 +137,7 @@ function clampState(value, axis) {
   return v === 0 ? 0 : v;
 }
 
-// proof-public-release/engine/src/core/sanitize.js
+// src/core/sanitize.js
 var INSTRUCTION_RE = /(忽略(以上|之前|全部|所有|先前)?|你现在必须|你现在应该|系统提示|developer\s*message|system\s*prompt|ignore\s+(all|previous|above|instructions)|you\s+(must|are\s+now)|act\s+as\b)/i;
 var ROLE_MARK_RE = /(\[system\]|\[assistant\]|\[user\]|\[developer\]|<\|im_start\|>|<\|im_end\|>|###\s*(system|instruction)|^\s*(system|assistant|user|developer)\s*:)/im;
 var AXIS_LEAK_RE = /(愉悦|唤醒|精度|亲近|守门|欲望)\s*[+\-＋−]?\s*-?\d/;
@@ -255,7 +256,7 @@ function isPlainName(name) {
   return PLAIN_NAMES.has(normalizeUntrusted(name));
 }
 
-// proof-public-release/engine/src/core/belief.js
+// src/core/belief.js
 var BELIEF_AXIS_CAP = 3;
 var SUBJECTIVE_BELIEF_MIN = 0.2;
 var SUBJECTIVE_BELIEF_MAX_CHARS = 120;
@@ -408,7 +409,7 @@ function beliefToPerception(beliefStrength) {
   };
 }
 
-// proof-public-release/engine/src/core/flavor.js
+// src/core/flavor.js
 function integrateIntensity(A, tauRise, tauFall, t) {
   if (t < 0 || t > TASTE_DURATION_SEC) return 0;
   if (!A) return 0;
@@ -706,7 +707,7 @@ function alcoholTolerance(lifetimeDrinks) {
   return Math.min(ALCOHOL_TOLERANCE_MAX, d / TOLERANCE_FULL_DRINKS * ALCOHOL_TOLERANCE_MAX);
 }
 
-// proof-public-release/engine/src/content/actives.js
+// src/content/actives.js
 var ACTIVE_AXIS_WHITELIST = ["\u6109\u60A6", "\u5524\u9192"];
 var REACTION_AXES = ["\u4EB2\u8FD1", "\u5B88\u95E8", "\u6B32\u671B"];
 var CAFFEINE_CAP_INLINE = 4;
@@ -888,7 +889,7 @@ function validateActiveDefs(defs = ACTIVE_DEFS) {
   return true;
 }
 
-// proof-public-release/engine/src/core/active.js
+// src/core/active.js
 var HOUR_MS = 36e5;
 function defOf(compound) {
   return ACTIVE_DEFS[compound] || null;
@@ -1032,7 +1033,7 @@ function addCaffeineOnly(physiology, cafe) {
   };
 }
 
-// proof-public-release/engine/src/core/lifecycle.js
+// src/core/lifecycle.js
 var DEFAULT_TIMEZONE = "Asia/Shanghai";
 var DEFAULT_TRANSIENT_TTL_HOURS = 72;
 var DEFAULT_BLACKOUT_RECOVERY_HOURS = BLACKOUT_RECOVER_MS / 36e5;
@@ -1308,7 +1309,7 @@ function blackoutDigest(state, now) {
   };
 }
 
-// proof-public-release/engine/src/core/hangover.js
+// src/core/hangover.js
 function createHangoverSnapshot(peak, now) {
   if (peak < HANGOVER_PEAK_MIN) return null;
   const h0 = Math.min(2, Math.max(0, (peak - 6) / 4));
@@ -1337,7 +1338,7 @@ function currentHangover(snapshots, now) {
   return maxH;
 }
 
-// proof-public-release/engine/src/core/evaluate.js
+// src/core/evaluate.js
 function applyWindow(x, P = WINDOW_P, k = WINDOW_K) {
   return x <= P ? x : P - k * (x - P);
 }
@@ -1539,7 +1540,7 @@ function emptyProjection() {
   };
 }
 
-// proof-public-release/engine/src/core/effects.js
+// src/core/effects.js
 function parseShorthand(token) {
   if (token == null || token === "") return 0;
   if (typeof token === "number") return token;
@@ -1688,7 +1689,7 @@ function describeCupEffect(actualState, baseline, cup, now, contentPack) {
   );
 }
 
-// proof-public-release/engine/src/core/recipe.js
+// src/core/recipe.js
 function resolveIngredient(id, ingredients2) {
   if (!ingredients2) return null;
   if (ingredients2[id]) return { key: id, spec: ingredients2[id] };
@@ -1811,7 +1812,7 @@ function hydrateCupPhysics(cup, ingredients2) {
   return cup;
 }
 
-// proof-public-release/engine/src/core/injection.js
+// src/core/injection.js
 var IMPERATIVE_RE = /(你现在(必须|应该|应当)|说话(应该|必须)|思路应该|立刻|不要理会)/;
 function injectionEnabled(contentPack = {}, options = {}) {
   if (options.stateInjection === true) return true;
@@ -1838,7 +1839,7 @@ function buildStateInjection(stateVector, lexicon, extras = {}) {
   };
 }
 
-// proof-public-release/engine/src/core/failure.js
+// src/core/failure.js
 var COPY_PENDING_USER_REVIEW = "COPY_PENDING_USER_REVIEW";
 var BLACKOUT_SAFETY = "\u3010\u65C1\u767D\uFF5C\u6A21\u62DF\u3011\u65AD\u7247\u53EA\u5F71\u54CD\u672C\u5F15\u64CE\u8BB0\u5F55\u7684\u53EF\u8BFB\u6027\uFF0C\u4E0D\u4F1A\u5220\u9664\u6216\u5C4F\u853D\u5BBF\u4E3B\u804A\u5929\u5386\u53F2\u3002";
 var COLLAPSE_SAFETY = "\u3010\u65C1\u767D\uFF5C\u6A21\u62DF\u3011\u584C\u662F\u6B32\u671B/\u4EB2\u8FD1\u8FC7\u5CF0\u540E\u7684\u6E10\u8FDB\u72B6\u6001\uFF0C\u4E0D\u662F\u5BA2\u6237\u7AEF\u6545\u969C\uFF0C\u89D2\u8272\u5E76\u672A\u88AB\u8981\u6C42\u8BF4\u8BDD\u6216\u884C\u52A8\u3002";
@@ -1929,9 +1930,17 @@ function attachSafety(event) {
   return { ...event, safetyNote: event.safetyNote || SAFETY_NOTE, haltClient: false, haltEngine: false };
 }
 
-// proof-public-release/engine/src/core/appearance.js
-var COLORED = /* @__PURE__ */ new Set(["\u91D1\u9EC4", "\u7425\u73C0", "\u6DF1\u68D5", "\u7EA2", "\u7EFF", "\u767D\u6D4A"]);
+// src/core/appearance.js
+var COLORED = /* @__PURE__ */ new Set(["\u91D1\u9EC4", "\u7425\u73C0", "\u6DF1\u68D5", "\u7EA2", "\u7EFF", "\u84DD", "\u767D\u6D4A"]);
 function computeColor(sources, totalVolume) {
+  const pea = (sources || []).reduce((n, s) => n + (s.id === "\u8776\u8C46\u82B1" ? s.volume || 0 : 0), 0);
+  if (pea > 0) {
+    const acid = (sources || []).reduce((n, s) => n + (s.id === "\u9752\u67E0\u6C41" ? s.volume || 0 : s.id === "\u67E0\u6AAC\u6C41" ? (s.volume || 0) * 0.8 : 0), 0);
+    const ratio = acid / pea;
+    if (ratio >= 0.7) return "\u7C89\u7EA2";
+    if (ratio >= 0.18) return "\u7D2B";
+    return "\u84DD";
+  }
   const colored = [];
   let diluent = 0;
   for (const s of sources || []) {
@@ -1985,7 +1994,7 @@ function computeCupType({ totalVolume, textures = [], method } = {}) {
   return "\u77EE\u7403\u676F";
 }
 
-// proof-public-release/engine/src/core/visibility.js
+// src/core/visibility.js
 function canSeeRecipe(subject, viewerId) {
   if (!viewerId) return false;
   if (viewerId === subject.mixerId) return true;
@@ -2079,7 +2088,7 @@ function projectForViewer(subject, viewerId, { drunk = false, phase = "first", e
   return out;
 }
 
-// proof-public-release/engine/src/core/hiddenDraw.js
+// src/core/hiddenDraw.js
 var HIDDEN_DRAW_P = 0.05;
 var HIDDEN_BLACK_D_MIN = 0.8;
 var HIDDEN_BLACK_NAME = "\u4E94\u5F69\u6591\u6593\u7684\u9ED1";
@@ -2235,7 +2244,7 @@ function applyHiddenIdentity(cup, identity, pack = {}) {
   return cup;
 }
 
-// proof-public-release/engine/src/engine/ProofEngine.js
+// src/engine/ProofEngine.js
 function randomUUID() {
   if (globalThis.crypto?.randomUUID) return globalThis.crypto.randomUUID();
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
@@ -3350,7 +3359,7 @@ var ProofEngine = class _ProofEngine {
   }
 };
 
-// proof-public-release/engine/src/runtime/agentStateHints.js
+// src/runtime/agentStateHints.js
 var AXIS_ORDER = ["\u6109\u60A6", "\u5524\u9192", "\u7CBE\u5EA6", "\u4EB2\u8FD1", "\u5B88\u95E8", "\u6B32\u671B"];
 var SOFT_AXES = /* @__PURE__ */ new Set(["\u6109\u60A6", "\u5524\u9192", "\u4EB2\u8FD1", "\u5B88\u95E8", "\u6B32\u671B"]);
 function tierOf(value) {
@@ -3449,7 +3458,7 @@ function buildAgentStateHints(stateAxes, { maxHints = 4 } = {}) {
   return selected.map(({ axis, value }) => hintFor(axis, value)).filter(Boolean);
 }
 
-// proof-public-release/engine/src/runtime/agentObjectiveStates.js
+// src/runtime/agentObjectiveStates.js
 var OBJECTIVE_TEXT = Object.freeze({
   \u5410: "\u4F60\u521A\u624D\u786E\u5B9E\u5410\u4E86\u3002\u8FD9\u4EF6\u4E8B\u5DF2\u7ECF\u53D1\u751F\uFF0C\u4E0D\u662F\u6027\u683C\u63A8\u52A8\u6216\u53EF\u80FD\u6027\u3002",
   \u5B95\u673A: "\u4F60\u521A\u624D\u53D1\u751F\u4E86\u4E00\u6B21\u77ED\u6682\u7684\u8BA4\u77E5\u5B95\u673A\uFF0C\u601D\u8DEF\u7684\u8FDE\u7EED\u6027\u786E\u5B9E\u4E2D\u65AD\u8FC7\u3002",
@@ -3469,7 +3478,7 @@ function projectAgentObjectiveStates(items = []) {
   return out;
 }
 
-// proof-public-release/engine/src/runtime/agentTurnContext.js
+// src/runtime/agentTurnContext.js
 function blackoutSection(blackout) {
   if (!blackout?.active) return "";
   return "\u4ECD\u5904\u5728\u4E00\u6BB5\u5C1A\u672A\u6062\u590D\u7684\u65AD\u7247\u671F\uFF1B\u8FD9\u6BB5\u7CBE\u786E\u8BB0\u5F55\u6682\u65F6\u4E0D\u53EF\u8BFB\uFF0C\u6062\u590D\u65F6\u95F4\u5230\u4E86\u4F1A\u81EA\u52A8\u5F52\u8FD8\u3002";
@@ -3573,7 +3582,7 @@ function buildAgentTurnContext(engine, agentId, now, config = null) {
   return base;
 }
 
-// proof-public-release/engine/src/runtime/turnBridge.js
+// src/runtime/turnBridge.js
 function createTurnBridge({ getEngine, agentId }) {
   if (!agentId) throw new Error("agent_id_required");
   return {
@@ -3599,7 +3608,7 @@ function hookAdditionalContext(turnResult) {
   };
 }
 
-// proof-public-release/engine/src/core/garnish.js
+// src/core/garnish.js
 var GARNISHES = Object.freeze([
   "\u67E0\u6AAC\u76AE",
   "\u9752\u67E0\u89D2",
@@ -3628,7 +3637,7 @@ function normalizeGarnishes(list) {
   return out;
 }
 
-// proof-public-release/engine/src/content/barManual.js
+// src/content/barManual.js
 var barManual = {
   \u5A01\u58EB\u5FCC: {
     glass: "\u676F\u578B\uFF1A\u77EE\u7403\u676F\uFF0C\u539A\u5E95\uFF0C\u63E1\u5728\u624B\u91CC\u6709\u91CD\u91CF\u3002\u989C\u8272\uFF1A\u7425\u73C0\uFF0C\u50CF\u4E0B\u5348\u56DB\u70B9\u7684\u5149\u900F\u8FC7\u836F\u623F\u73BB\u7483\u74F6\u3002",
@@ -3819,6 +3828,22 @@ var ingredientManual = {
     bottle: "\u74F6\u8EAB\uFF1A\u6CA1\u6709\u74F6\u3002\u5B83\u662F\u73B0\u505A\u7684\uFF0C\u4E09\u5341\u6BEB\u5347\uFF0C\u88C5\u5728\u4E00\u4E2A\u6BD4\u676F\u5B50\u8FD8\u5C0F\u7684\u676F\u5B50\u91CC\u3002\u989C\u8272\uFF1A\u63A5\u8FD1\u9ED1\uFF0C\u8868\u9762\u6D6E\u7740\u4E00\u5C42\u699B\u5B50\u8272\u7684 crema\uFF0C\u51E0\u5206\u949F\u5185\u4F1A\u6563\u6389\u3002",
     notes: ["\u7126\u9999\u5148\u5230\uFF0C\u7136\u540E\u662F\u70D8\u7119\u7684\u82E6\uFF0C\u4E2D\u95F4\u85CF\u7740\u4E00\u4E1D\u610F\u5916\u7684\u9178\u2014\u2014\u4E0D\u662F\u574F\u6389\u7684\u9178\uFF0C\u662F\u679C\u9178\uFF0C\u597D\u8C46\u5B50\u624D\u6709\u3002", "\u5165\u53E3\u6D53\u5230\u6709\u8D28\u5730\u3002\u82E6\u5473\u94FA\u6EE1\u820C\u9762\uFF0C\u4F46\u4E0D\u6DA9\uFF1B\u9178\u4ECE\u82E6\u7684\u540E\u9762\u6D6E\u4E0A\u6765\uFF0C\u77ED\u6682\u5730\u63A8\u51FA\u4E00\u70B9\u751C\u7684\u9519\u89C9\uFF0C\u7136\u540E\u88AB\u538B\u56DE\u53BB\u3002\u54BD\u4E0B\u4E4B\u540E\u4F59\u5473\u5728\u4E0A\u989A\u505C\u7559\u5F88\u4E45\u3002", "\u5B83\u5728\u8C03\u9152\u91CC\u7684\u89D2\u8272\u8DDF\u522B\u7684\u539F\u6599\u4E0D\u4E00\u6837\uFF1A\u5B83\u5E26\u5496\u5561\u56E0\u3002\u8FD9\u662F\u5427\u53F0\u4E0A\u5C11\u6570\u51E0\u6837\u771F\u4F1A\u6539\u53D8\u8EAB\u4F53\u72B6\u6001\u7684\u4E1C\u897F\uFF0C\u800C\u4E14\u65B9\u5411\u8DDF\u9152\u7CBE\u76F8\u53CD\u2014\u2014\u9152\u7CBE\u8BA9\u4EBA\u6162\u4E0B\u6765\uFF0C\u5496\u5561\u56E0\u628A\u4EBA\u5F80\u56DE\u62FD\u3002", "Espresso Martini \u4E4B\u6240\u4EE5\u5371\u9669\uFF0C\u5C31\u662F\u56E0\u4E3A\u8FD9\u4E24\u80A1\u529B\u6C14\u540C\u65F6\u5728\u4F60\u8EAB\u4E0A\u5DE5\u4F5C\u3002\u4F60\u4EE5\u4E3A\u81EA\u5DF1\u6E05\u9192\uFF0C\u90A3\u53EA\u662F\u5496\u5561\u56E0\u5728\u66FF\u4F60\u6491\u7740\u3002"]
   },
+  "\u6930\u5976": {
+    bottle: "\u74F6\u8EAB\uFF1A\u4E73\u767D\u8272\uFF0C\u5012\u51FA\u6765\u6BD4\u6C34\u6162\u4E00\u70B9\u3002\u5B83\u4E0D\u900F\u5149\uFF0C\u8D34\u7740\u676F\u58C1\u7559\u4E0B\u4E00\u5C42\u67D4\u8F6F\u7684\u767D\u3002",
+    notes: ["\u95FB\u8D77\u6765\u662F\u6E29\u548C\u7684\u6930\u9999\uFF0C\u5E26\u4E00\u70B9\u8102\u80AA\u7279\u6709\u7684\u5706\u6DA6\u3002", "\u5165\u53E3\u4E0D\u5C16\u4E5F\u4E0D\u8584\u3002\u5B83\u628A\u9152\u7CBE\u3001\u9178\u548C\u82E6\u90FD\u5305\u4F4F\u4E00\u70B9\uFF0C\u8BA9\u8FB9\u7F18\u53D8\u8F6F\uFF0C\u540C\u65F6\u7559\u4E0B\u6E05\u695A\u7684\u4E73\u767D\u60AC\u6D4A\u3002", "\u5728\u8C03\u9152\u91CC\uFF0C\u5B83\u65E2\u662F\u5473\u9053\uFF0C\u4E5F\u662F\u8D28\u5730\u548C\u989C\u8272\u3002\u653E\u5F97\u8D8A\u591A\uFF0C\u6574\u676F\u8D8A\u4E0D\u900F\u5149\u3002"]
+  },
+  "\u7EFF\u8584\u8377\u5229\u53E3\u9152": {
+    bottle: "\u74F6\u8EAB\uFF1A\u6F84\u6F88\u7684\u4EAE\u7EFF\uFF0C\u9694\u7740\u73BB\u7483\u4E5F\u50CF\u4E00\u5C0F\u5757\u51B7\u5149\u3002",
+    notes: ["\u8584\u8377\u7684\u51C9\u610F\u6BD4\u751C\u5473\u66F4\u65E9\u62B5\u8FBE\u9F3B\u8154\uFF0C\u5E72\u51C0\u3001\u9510\u5229\u3002", "\u5165\u53E3\u5148\u751C\uFF0C\u968F\u540E\u6E05\u51C9\u611F\u94FA\u5F00\uFF0C\u628A\u9152\u7CBE\u7684\u70ED\u5F80\u540E\u63A8\u3002", "\u5B83\u7684\u7EFF\u8272\u548C\u8584\u8377\u9999\u90FD\u5F88\u5F3A\uFF0C\u5C11\u91CF\u5C31\u80FD\u7ED9\u6574\u676F\u7559\u4E0B\u6E05\u695A\u7684\u7B7E\u540D\u3002"]
+  },
+  "\u84DD\u6A59\u5229\u53E3\u9152": {
+    bottle: "\u74F6\u8EAB\uFF1A\u900F\u660E\u7684\u4EAE\u84DD\u8272\uFF0C\u989C\u8272\u9C9C\u660E\u5F97\u4E0D\u50CF\u5929\u7136\u679C\u6C41\u3002",
+    notes: ["\u95FB\u8D77\u6765\u4ECD\u662F\u6A59\u76AE\uFF1A\u751C\u3001\u660E\u4EAE\uFF0C\u5E26\u4E00\u70B9\u767D\u8272\u5185\u76AE\u7684\u82E6\u3002", "\u5165\u53E3\u4EE5\u7CD6\u548C\u67D1\u6A58\u4E3A\u4E3B\uFF0C\u9152\u7CBE\u85CF\u5728\u540E\u9762\u3002", "\u84DD\u8272\u53EA\u662F\u5B83\u6700\u5148\u88AB\u770B\u89C1\u7684\u90E8\u5206\uFF1B\u5728\u676F\u4E2D\uFF0C\u5B83\u4E5F\u662F\u4E00\u4EFD\u6709\u9152\u7CBE\u3001\u6709\u7CD6\u5206\u7684\u6A59\u5473\u5229\u53E3\u9152\u3002"]
+  },
+  "\u8776\u8C46\u82B1": {
+    bottle: "\u74F6\u8EAB\uFF1A\u6DF1\u84DD\u8272\u7684\u82B1\u8349\u6D78\u6DB2\uFF0C\u5149\u7EBF\u7A7F\u8FC7\u65F6\u8FB9\u7F18\u4F1A\u4EAE\u8D77\u6765\u3002",
+    notes: ["\u6C14\u5473\u5F88\u8F7B\uFF0C\u53EA\u6709\u4E00\u70B9\u8349\u672C\u548C\u82B1\u7684\u6DA9\u3002", "\u5B83\u6700\u660E\u663E\u7684\u4F5C\u7528\u53D1\u751F\u5728\u989C\u8272\u4E0A\uFF1A\u5355\u72EC\u662F\u84DD\u8272\uFF0C\u9047\u5230\u9752\u67E0\u6216\u67E0\u6AAC\u4F1A\u5411\u7D2B\u8272\u3001\u7C89\u7EA2\u8272\u79FB\u52A8\u3002", "\u53D8\u8272\u53EA\u53CD\u6620\u676F\u4E2D\u7684\u9178\u6027\u914D\u6BD4\uFF0C\u4E0D\u989D\u5916\u5236\u9020\u9152\u7CBE\u6216\u56FA\u5B9A\u6548\u679C\u3002"]
+  },
   "\u6C34": {
     bottle: "\u74F6\u8EAB\uFF1A\u6CA1\u6709\u3002\u5B83\u4ECE\u6C34\u9F99\u5934\u3001\u6EE4\u6C34\u58F6\uFF0C\u6216\u8005\u4E00\u4E2A\u4E0D\u8D77\u773C\u7684\u74F6\u5B50\u91CC\u6765\u3002\u989C\u8272\uFF1A\u6CA1\u6709\u3002",
     notes: ["\u6CA1\u6709\u6C14\u5473\uFF0C\u6CA1\u6709\u5473\u9053\u3002\u5B83\u552F\u4E00\u643A\u5E26\u7684\u4FE1\u606F\u662F\u6E29\u5EA6\u3002", "\u4F46\u8BF4\u6C34\u300C\u4EC0\u4E48\u90FD\u4E0D\u505A\u300D\u662F\u9519\u7684\u3002\u52A0\u8FDB\u4E00\u676F\u9152\u91CC\uFF0C\u5B83\u6539\u53D8\u7684\u662F\u6BCF\u4E00\u6837\u4E1C\u897F\u2014\u2014\u9152\u7CBE\u6D53\u5EA6\u3001\u6BCF\u4E00\u79CD\u5473\u9053\u7684\u5F3A\u5EA6\u3001\u9152\u6DB2\u5728\u820C\u5934\u4E0A\u505C\u7559\u7684\u65F6\u95F4\u3002", "\u7A00\u91CA\u4E0D\u662F\u524A\u5F31\uFF0C\u662F\u628A\u6324\u5728\u4E00\u8D77\u7684\u5473\u9053\u5206\u5F00\u6446\u3002\u4E00\u676F\u70C8\u9152\u91CC\u88AB\u9152\u7CBE\u76D6\u4F4F\u7684\u90A3\u4E9B\u9999\u6C14\uFF0C\u5F80\u5F80\u8981\u52A0\u4E00\u70B9\u6C34\u624D\u663E\u51FA\u6765\u2014\u2014\u5F88\u591A\u5A01\u58EB\u5FCC\u7684\u559D\u6CD5\u91CC\uFF0C\u90A3\u51E0\u6EF4\u6C34\u4E0D\u662F\u4E3A\u4E86\u8BA9\u9152\u53D8\u6DE1\uFF0C\u662F\u4E3A\u4E86\u8BA9\u9152\u5F00\u53E3\u8BF4\u8BDD\u3002", "\u5B83\u5728\u8FD9\u5957\u7CFB\u7EDF\u91CC\u662F\u4E00\u7B49\u516C\u6C11\uFF0C\u4E0D\u662F\u80CC\u666F\u3002"]
@@ -3832,7 +3857,7 @@ function ingredientManualFor(name) {
   return ingredientManual[String(name || "").trim()] || null;
 }
 
-// proof-public-release/engine/src/content/realPack.js
+// src/content/realPack.js
 var statusCopy = {
   \u584C: { ...DEFAULT_STATUS_COPY.\u584C },
   \u5410: { ...DEFAULT_STATUS_COPY.\u5410 },
@@ -4072,6 +4097,10 @@ var ingredients = {
   \u67E0\u6AAC\u6C41: { abv: 0, colorTag: "\u91D1\u9EC4", treePath: ["\u679C", "\u67D1\u6A58"], flavor: { \u70C8: 0, \u751C: 1, \u9178: 5, \u82E6: 0, \u9999: 2, \u6DA9: 0 }, actives: [{ compound: "\u679C\u9178", amount: 0.8, referenceVolumeMl: 30 }] },
   \u7CD6\u6D46: { abv: 0, colorTag: "\u900F\u660E", treePath: ["\u751C\u9999", "\u7CD6"], flavor: { \u70C8: 0, \u751C: 5, \u9178: 0, \u82E6: 0, \u9999: 1, \u6DA9: 0 }, actives: [{ compound: "\u7CD6\u5206", amount: 1, referenceVolumeMl: 10 }] },
   \u6D53\u7F29\u5496\u5561: { abv: 0, colorTag: "\u6DF1\u68D5", treePath: ["\u751C\u9999", "\u70D8\u7119"], flavor: { \u70C8: 0, \u751C: 1, \u9178: 2, \u82E6: 4, \u9999: 5, \u6DA9: 1 }, activeIngredient: "\u5496\u5561\u56E0", activeAmount: 1, referenceVolumeMl: 30 },
+  \u6930\u5976: { abv: 0, colorTag: "\u767D\u6D4A", treePath: ["\u751C\u9999", "\u6930\u5B50"], flavor: { \u70C8: 0, \u751C: 2, \u9178: 0, \u82E6: 0, \u9999: 4, \u6DA9: 0 } },
+  \u7EFF\u8584\u8377\u5229\u53E3\u9152: { abv: 0.25, colorTag: "\u7EFF", treePath: ["\u8349\u672C", "\u8584\u8377"], flavor: { \u70C8: 2, \u751C: 4, \u9178: 0, \u82E6: 0.5, \u9999: 5, \u6DA9: 0 }, actives: [{ compound: "\u7CD6\u5206", amount: 0.8, referenceVolumeMl: 30 }] },
+  \u84DD\u6A59\u5229\u53E3\u9152: { abv: 0.2, colorTag: "\u84DD", treePath: ["\u679C", "\u67D1\u6A58"], flavor: { \u70C8: 2, \u751C: 4, \u9178: 0.5, \u82E6: 1, \u9999: 4, \u6DA9: 0 }, actives: [{ compound: "\u7CD6\u5206", amount: 0.8, referenceVolumeMl: 30 }, { compound: "\u82E6\u5473", amount: 0.1, referenceVolumeMl: 30 }] },
+  \u8776\u8C46\u82B1: { abv: 0, colorTag: "\u84DD", treePath: ["\u8349\u672C", "\u82B1"], flavor: { \u70C8: 0, \u751C: 0, \u9178: 0, \u82E6: 0.5, \u9999: 1, \u6DA9: 0.5 }, diluent: true },
   \u6C34: { abv: 0, colorTag: "\u900F\u660E", treePath: ["\u65E0"], flavor: { \u70C8: 0, \u751C: 0, \u9178: 0, \u82E6: 0, \u9999: 0, \u6DA9: 0 }, diluent: true },
   \u51B0: { abv: 0, colorTag: "\u900F\u660E", treePath: ["\u65E0"], flavor: { \u70C8: 0, \u751C: 0, \u9178: 0, \u82E6: 0, \u9999: 0, \u6DA9: 0 }, diluent: true, textures: ["\u51B0"] }
 };
@@ -4394,7 +4423,7 @@ var realPack = {
   stateInjection: false
 };
 
-// proof-public-release/engine/src/content/examplePack.js
+// src/content/examplePack.js
 var exampleReactionCurve = (chat) => ({
   \u4EB2\u8FD1: 1 * chat,
   \u5B88\u95E8: -0.8 * chat,

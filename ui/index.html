@@ -39,7 +39,7 @@ import { ProofEngine, buildFromParts, ingredients as engineIngredients, menu as 
   var capacity={shot:90,rocks:300,highball:350,martini:250,coupe:200,large:500};
   var meta={base:['基酒','BASE SPIRITS'],classic:['经典','CLASSICS'],brewed:['酿造','BREWED'],nonalcoholic:['无酒精','NON-ALCOHOLIC'],custom:['特调','HOUSE SPECIALS']};
   var order=['base','classic','brewed','nonalcoholic','custom'],glassTypes=['shot','rocks','highball','martini','coupe','large'];
-  var colorMap={'透明':'#e8dfc8','淡透明':'#e8dfc8','金黄':'#d4a830','琥珀':'#b87333','深棕':'#3a1e10','红':'#c84060','绿':'#7dbfa0','白浊':'#e8dfd4'};
+  var colorMap={'透明':'#e8dfc8','淡透明':'#e8dfc8','金黄':'#d4a830','琥珀':'#b87333','深棕':'#3a1e10','红':'#c84060','粉红':'#df5a92','紫':'#7040ad','蓝':'#315ac4','绿':'#7dbfa0','白浊':'#e8dfd4'};
   var glassKey={'子弹杯':'shot','矮球杯':'rocks','高球杯':'highball','鸡尾酒杯':'martini','碟形杯':'coupe','大杯':'large'};
   var engineGlass={shot:'子弹杯',rocks:'矮球杯',highball:'高球杯',martini:'鸡尾酒杯',coupe:'碟形杯',large:'大杯'};
   function colorHex(label){var key=Object.keys(colorMap).find(function(x){return String(label||'').endsWith(x);});return colorMap[key]||'#a09488';}

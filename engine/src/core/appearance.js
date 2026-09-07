@@ -2,9 +2,17 @@
 
 import { COLOR_FAMILIES } from './constants.js';
 
-const COLORED = new Set(['金黄', '琥珀', '深棕', '红', '绿', '白浊']);
+const COLORED = new Set(['金黄', '琥珀', '深棕', '红', '绿', '蓝', '白浊']);
 
 export function computeColor(sources, totalVolume) {
+  const pea = (sources || []).reduce((n, s) => n + (s.id === '蝶豆花' ? s.volume || 0 : 0), 0);
+  if (pea > 0) {
+    const acid = (sources || []).reduce((n, s) => n + (s.id === '青柠汁' ? s.volume || 0 : s.id === '柠檬汁' ? (s.volume || 0) * 0.8 : 0), 0);
+    const ratio = acid / pea;
+    if (ratio >= 0.7) return '粉红';
+    if (ratio >= 0.18) return '紫';
+    return '蓝';
+  }
   const colored = [];
   let diluent = 0;
   for (const s of sources || []) {

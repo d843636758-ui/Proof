@@ -109,7 +109,7 @@ export const WINDOW_K = 1.5;
 export const SIGNIFICANT_VOLUME = 0.05;
 export const SIGNIFICANT_FLAVOR = 0.1;
 
-export const COLOR_TAGS = ['透明', '金黄', '琥珀', '深棕', '红', '绿', '白浊'];
+export const COLOR_TAGS = ['透明', '金黄', '琥珀', '深棕', '红', '绿', '蓝', '白浊'];
 export const COLOR_FAMILIES = {
   透明: null,
   金黄: '棕',
@@ -117,6 +117,7 @@ export const COLOR_FAMILIES = {
   深棕: '棕',
   红: '红',
   绿: '绿',
+  蓝: '蓝',
   白浊: '白'
 };
 
